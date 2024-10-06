@@ -22,7 +22,6 @@ public class Matrix {
         this.rows = rows;
         this.columns = columns;
         this.matrix = new double[rows][columns];
-        System.out.printf("Створено матрицю заданого розміру %dx%d.\n", rows, columns);
     }
 
     public Matrix(Matrix matrix) {
@@ -34,7 +33,7 @@ public class Matrix {
                 this.matrix[i][j] = matrix.matrix[i][j];
             }
         }
-        System.out.println("Створено копію матриці:.");
+        System.out.println("\nСтворено копію матриці:");
         printMatrix();
     }
 
@@ -273,4 +272,68 @@ public class Matrix {
         return columnMatrix;
     }
 
+    // Task 15
+    public Matrix toLowerTriangular() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = i + 1; j < columns; j++) {
+                matrix[i][j] = 0;
+            }
+        }
+        System.out.println("\nНижня трикутна матриця: ");
+        printMatrix();
+        return this;
+    }
+
+    public Matrix toUpperTriangular() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = i; j < rows; j++) {
+                if (j > i) matrix[j][i] = 0;
+            }
+        }
+        System.out.println("\nВерхня трикутна матриця: ");
+        printMatrix();
+        return this;
+    }
+
+    // Task 16
+    public Matrix invert() {
+        if (rows != columns) {
+            System.out.println("Матриця повинна бути квадратною.");
+        }
+        Matrix augmented = new Matrix(rows, columns * 2);
+
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                augmented.matrix[i][j] = this.matrix[i][j];
+                augmented.matrix[i][j + columns] = (i == j) ? 1 : 0;
+            }
+        }
+
+        for (int i = 0; i < rows; i++) {
+            double pivot = augmented.matrix[i][i];
+            if (pivot == 0) {
+                System.out.println("Матриця не має оберненої (її детермінант дорівнює 0).");
+            }
+            for (int j = 0; j < 2 * columns; j++) {
+                augmented.matrix[i][j] /= pivot;
+            }
+            for (int k = 0; k < rows; k++) {
+                if (k != i) {
+                    double factor = augmented.matrix[k][i];
+                    for (int j = 0; j < 2 * columns; j++) {
+                        augmented.matrix[k][j] -= factor * augmented.matrix[i][j];
+                    }
+                }
+            }
+        }
+        Matrix invertedMatrix = new Matrix(rows, columns);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < columns; j++) {
+                invertedMatrix.matrix[i][j] = augmented.matrix[i][j + columns];
+            }
+        }
+        System.out.println("\nОбернена матриця: ");
+        invertedMatrix.printMatrix();
+        return invertedMatrix;
+    }
 }
