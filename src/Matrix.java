@@ -1,9 +1,11 @@
+import interfaces.MatrixInterface;
+
 import java.util.Arrays;
 import java.util.Random;
 import java.util.Scanner;
 
 // Task 1
-public class Matrix {
+public class Matrix implements MatrixInterface {
     private final int rows;
     private int columns;
     private double[][] matrix;
