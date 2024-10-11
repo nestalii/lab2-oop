@@ -201,7 +201,7 @@ public class Matrix implements MatrixInterface {
         for (int i = 0; i < this.rows; i++) {
             for (int j = 0; j < other.columns; j++) {
                 for (int k = 0; k < this.columns; k++) {
-                    this.matrix[i][j] += this.matrix[i][k] * other.matrix[k][j];
+                    result[i][j] += this.matrix[i][k] * other.matrix[k][j];
                 }
             }
         }
